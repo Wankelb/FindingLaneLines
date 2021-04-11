@@ -18,21 +18,23 @@ Pipeline of Project
 
 1- Converted the images to grayscale from RGB model
   
-  a) Orginal Image
+  a) Orginal Image </br>
     <img src="test_images/solidWhiteRight.jpg" width="480" alt="Combined Image" />
     </br>
-  b) Orginal Image with Grayscale model
+  b) Orginal Image with Grayscale model </br>
     <img src="examples/grayscale.jpg" width="480" alt="Combined Image" />
+    </br>
   
-2- Apply Gaussian smoothing to the grayscaled image
+2- Apply Gaussian smoothing to the grayscaled image </br>
     <img src="examples/blur.jpg" width="480" alt="Combined Image" />  
     </br>
-3- Use canny edge detection to find all edges 
+3- Use canny edge detection to find all edges </br>
     <img src="examples/edges1.jpg" width="480" alt="Combined Image" />
      </br>
-4- Apply hough transformation to find the lines in the region of interest
+4- Apply hough transformation to find the lines in the region of interest </br>
 <img src="examples/lines.jpg" width="480" alt="Combined Image" />
-
+    </br>
+    
 Draw the lines over the original image. More than one lines are generated from the previous step for left/right lane. We use the slope to detect if a specific line belongs to the left/right lane. Then we fit a liear polynomial among all the points and use that line as the left/right lane. It helps to reduce the number of lines in the image.
 
 5- Finally, we add the lane lines image and innitial image together.
