@@ -1,56 +1,62 @@
-# **Finding Lane Lines on the Road** 
+# Udacity Self-Driving Car Engineer Nano Degree Project-1                                              (Finding Lane Lines on the Road)
+                           
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
 <img src="examples/laneLines_thirdPass.jpg" width="480" alt="Combined Image" />
 
-Overview big malafat
+Overview 
 ---
 
 When we drive, we use our eyes to decide where to go.  The lines on the road that show us where the lanes are act as our constant reference for where to steer the vehicle.  Naturally, one of the first things we would like to do in developing a self-driving car is to automatically detect lane lines using an algorithm.
 
 In this project you will detect lane lines in images using Python and OpenCV.  OpenCV means "Open-Source Computer Vision", which is a package that has many useful tools for analyzing images.  
 
-To complete the project, two files will be submitted: a file containing project code and a file containing a brief write up explaining your solution. We have included template files to be used both for the [code](https://github.com/udacity/CarND-LaneLines-P1/blob/master/P1.ipynb) and the [writeup](https://github.com/udacity/CarND-LaneLines-P1/blob/master/writeup_template.md).The code file is called P1.ipynb and the writeup template is writeup_template.md 
-
-To meet specifications in the project, take a look at the requirements in the [project rubric](https://review.udacity.com/#!/rubrics/322/view)
-
-
-Creating a Great Writeup
----
-For this project, a great writeup should provide a detailed response to the "Reflection" section of the [project rubric](https://review.udacity.com/#!/rubrics/322/view). There are three parts to the reflection:
-
-1. Describe the pipeline
-
-2. Identify any shortcomings
-
-3. Suggest possible improvements
-
-We encourage using images in your writeup to demonstrate how your pipeline works.  
-
-All that said, please be concise!  We're not looking for you to write a book here: just a brief description.
-
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup. Here is a link to a [writeup template file](https://github.com/udacity/CarND-LaneLines-P1/blob/master/writeup_template.md). 
-
-
-The Project
+ I will use the tools about computer version to identify lane lines on the road. I will develop a pipeline on a series of individual images, and later apply the result to a video stream (really just a series of images).
+ 
+Pipeline of Project 
 ---
 
-## If you have already installed the [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) you should be good to go!   If not, you should install the starter kit to get started on this project. ##
+1- Converted the images to grayscale from RGB model
+  
+  a) Orginal Image
+    <img src="test_images/solidWhiteRight.jpg" width="480" alt="Combined Image" />
+  b) Orginal Image with Grayscale model
+    <img src="examples/grayscale.jpg" width="480" alt="Combined Image" />
+  
+2- Apply Gaussian smoothing to the grayscaled image
+    <img src="examples/blur.jpg" width="480" alt="Combined Image" />
+3- Use canny edge detection to find all edges 
+    <img src="examples/edges1.jpg" width="480" alt="Combined Image" />
+4- Apply hough transformation to find the lines in the region of interest
+<img src="examples/lines.jpg" width="480" alt="Combined Image" />
 
-**Step 1:** Set up the [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) if you haven't already.
+Draw the lines over the original image. More than one lines are generated from the previous step for left/right lane. We use the slope to detect if a specific line belongs to the left/right lane. Then we fit a liear polynomial among all the points and use that line as the left/right lane. It helps to reduce the number of lines in the image.
 
-**Step 2:** Open the code in a Jupyter Notebook
+5- Finally, we add the lane lines image and innitial image together.
 
-You will complete the project code in a Jupyter notebook.  If you are unfamiliar with Jupyter Notebooks, check out [Udacity's free course on Anaconda and Jupyter Notebooks](https://classroom.udacity.com/courses/ud1111) to get started.
+Apply Hough Line detection on the mask and collect identified line segments for the next additonal step. In the example below, I validate the good performance on both line types despite shadow conditions. Next we will make up for full solid lines.
 
-Jupyter is an Ipython notebook where you can run blocks of code and see results interactively.  All the code for this project is contained in a Jupyter notebook. To start Jupyter in your browser, use terminal to navigate to your project directory and then run the following command at the terminal prompt (be sure you've activated your Python 3 carnd-term1 environment as described in the [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) installation instructions!):
+<img src="examples/laneLines_thirdPass.jpg" width="480" alt="Combined Image" />
 
-`> jupyter notebook`
+The line extraction pipeline proved very efficient using movies even with challenging shading conditions.
 
-A browser window will appear showing the contents of the current directory.  Click on the file called "P1.ipynb".  Another browser window will appear displaying the notebook.  Follow the instructions in the notebook to complete the project.  
+For a video clip, we apply the above procedure to each frame.
 
-**Step 3:** Complete the project and submit both the Ipython notebook and the project writeup
+Test on videos
+---
+We can test our solution on three provided videos:
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+solidWhiteRight.mp4
 
+solidYellowLeft.mp4
+
+challenge.mp4
+
+You can find the result of the videos in the folder "test_videos output"
+
+Conclusion
+---
+
+The project was successful as all lines were also successfully recognized on the challenging video.
+A disadvantage of this solution is that only straight lane lines are recognized. By using, for example, poly fitting, the algorithm could be modified so that it also recognizes curved lines. For the videos provided, this is not a problem as the lines closest to the car are straight.
+Another problem shows us that the horizontal line is explicitly set as the upper limit of the lane lines and only works well if the road is not too steep. In this case the upper horizontal line would have to be estimated differently.
