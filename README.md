@@ -20,13 +20,16 @@ Pipeline of Project
   
   a) Orginal Image
     <img src="test_images/solidWhiteRight.jpg" width="480" alt="Combined Image" />
+    </br>
   b) Orginal Image with Grayscale model
     <img src="examples/grayscale.jpg" width="480" alt="Combined Image" />
   
 2- Apply Gaussian smoothing to the grayscaled image
-    <img src="examples/blur.jpg" width="480" alt="Combined Image" />
+    <img src="examples/blur.jpg" width="480" alt="Combined Image" />  
+    </br>
 3- Use canny edge detection to find all edges 
     <img src="examples/edges1.jpg" width="480" alt="Combined Image" />
+     </br>
 4- Apply hough transformation to find the lines in the region of interest
 <img src="examples/lines.jpg" width="480" alt="Combined Image" />
 
